@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ShortsRadar</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header><div class="logo">SR</div><div><b>ShortsRadar</b><small>for YouTube</small></div></header>
+  <div id="status" class="status">Checking connection…</div>
+  <label class="row"><input type="checkbox" id="enabled"> Show the panel on YouTube</label>
+  <label class="field">App port <input type="number" id="port" min="1" max="65535" value="8765"></label>
+  <div class="actions">
+    <button id="save">Save</button>
+    <a id="open" href="http://127.0.0.1:8765/" target="_blank" rel="noopener">Open dashboard ↗</a>
+  </div>
+  <p class="hint">The extension reads data from the ShortsRadar app on this computer. Start it with <code>python run.py</code>.</p>
+  <script src="popup.js"></script>
+</body>
+</html>

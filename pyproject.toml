@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shortsradar"
+version = "1.0.0"
+description = "Self-hosted YouTube & Shorts research toolkit: keyword research, outliers, video scorecards, channel audits, competitor tracking, SEO and AI helpers."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+ai = ["anthropic>=1.8"]
+
+[project.scripts]
+shortsradar = "shortsradar.cli:main"
+
+[tool.setuptools]
+packages = ["shortsradar"]
+
+[tool.setuptools.package-data]
+shortsradar = ["web/*"]

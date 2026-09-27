@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "ShortsRadar for YouTube",
+  "version": "1.0.0",
+  "description": "Shows ShortsRadar stats on YouTube: views per hour, outlier score, SEO audit, tags and keyword scores. Needs the ShortsRadar app running on your computer.",
+  "permissions": ["storage"],
+  "host_permissions": ["http://127.0.0.1/*", "http://localhost/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*", "https://m.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": { "default_popup": "popup.html", "default_title": "ShortsRadar" },
+  "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" }
+}
