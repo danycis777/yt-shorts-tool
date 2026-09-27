@@ -774,12 +774,23 @@ PAGES.titles = (params, main, alive) => {
 };
 
 // --- AI studio
+// Installing the Claude SDK: the exact command for the Python that runs ShortsRadar (a bare `pip` often targets another Python).
+const sdkNote = (inst) => h("div", { class: "note " + (inst.python_ok ? "info" : "warn") }, icon(inst.python_ok ? "info" : "alert"),
+  inst.python_ok
+    ? h("div", { class: "stack-sm grow" },
+      h("div", {}, `Install the Claude SDK once: open ${inst.shell} on this computer and run`),
+      h("div", { class: "cmd" }, inst.command),
+      h("div", { class: "row", style: { alignItems: "center" } }, copyBtn(inst.command, "command", "Copy command"), h("span", { class: "small muted" }, inst.after)))
+    : h("div", {}, `Claude needs Python 3.10 or newer, but ShortsRadar is running on Python ${inst.python_version}. Install the latest Python from `,
+      h("a", { href: "https://www.python.org/downloads/", target: "_blank", rel: "noopener" }, "python.org"), ", then start ShortsRadar again."));
+
 const AI_TASKS = [["titles", "Titles"], ["hooks", "Hooks"], ["script", "Shorts script"], ["description", "Description"], ["tags", "Tags"], ["ideas", "Video ideas"]];
 PAGES.ai = (params, main, alive) => {
   const st = state.status.ai;
   main.appendChild(pageHead("AI studio", "Hooks, Shorts scripts, titles, descriptions, tags and ideas. Uses Claude when you add an API key; otherwise free templates, or a ready-to-paste prompt for Claude.ai."));
   let task = params.task || "script";
   const note = st.ready ? h("div", { class: "note good" }, icon("good"), h("div", {}, `Claude is ready (${st.model}, ${st.effort} effort).`))
+    : st.key_configured && st.install ? sdkNote(st.install)
     : h("div", { class: "note info" }, icon("info"), h("div", {}, st.hint || "Claude isn't configured.", " ", h("a", { href: "#/settings" }, "Settings")));
   main.appendChild(h("div", { style: { marginBottom: "12px" } }, note));
   const f = {
@@ -1011,7 +1022,7 @@ PAGES.settings = async (params, main, alive) => {
       card("Claude (optional)", "For AI titles, hooks, scripts and descriptions",
         h("div", { class: "stack-sm" }, h("div", { class: "row" }, h("div", { class: "grow" }, aiKey), reveal(aiKey)),
           h("div", { class: "row" }, field("Model", model, null, "grow"), field("Effort", effort)),
-          h("div", { class: "small muted" }, state.status.ai.sdk_installed ? "Claude SDK installed." : "Also run: pip install \"anthropic>=1.8\" (needs Python 3.10+)."))),
+          state.status.ai.install ? sdkNote(state.status.ai.install) : h("div", { class: "small muted" }, "Claude SDK installed."))),
       card("Preferences", null, h("div", { class: "stack-sm" },
         h("div", { class: "row" }, field("Region", region, null, "grow"), field("Language", lang)),
         h("div", { class: "row" }, field("Timezone", tz, "for best posting times", "grow"), field("Default format", defFmt)),

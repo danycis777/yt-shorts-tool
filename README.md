@@ -30,7 +30,7 @@ Keyword research with volume/competition/overall scores, an outlier finder, vide
 
 ## Quick start (about 5 minutes)
 
-1. **Install Python 3.9 or newer** from [python.org/downloads](https://www.python.org/downloads/).
+1. **Install Python 3.10 or newer** from [python.org/downloads](https://www.python.org/downloads/) (3.9 runs everything except the optional Claude integration).
    *Windows:* tick **"Add python.exe to PATH"** in the installer.
 2. **Get this project**: on GitHub press **Code → Download ZIP** and unzip it (or `git clone` it).
 3. **Start it**
@@ -74,11 +74,12 @@ Today's usage is shown at the top of the dashboard and in Settings. The quota re
 
 The AI studio (hooks, Shorts scripts, titles, descriptions, tags, ideas) works three ways:
 
-- **Claude** — best results. Needs Python 3.10+ and:
+- **Claude** — best results. Needs Python 3.10+ and the Claude SDK, installed once **on the computer that runs ShortsRadar**. **Settings shows the exact command for your computer** with a Copy button (a bare `pip install` often installs into a different Python than the one running ShortsRadar). It usually looks like this:
   ```bash
-  pip install "anthropic>=1.8"
+  py -m pip install "anthropic>=1.8"          # Windows: Command Prompt
+  python3 -m pip install "anthropic>=1.8"     # macOS / Linux: Terminal
   ```
-  then paste an API key from [platform.claude.com](https://platform.claude.com/settings/keys) into **Settings**. Default model: **Claude Opus 5** at *medium* effort (both adjustable in Settings). Requests use Anthropic's server-side refusal fallback (`fallbacks: "default"`) so a request that trips a safety classifier is retried on the recommended fallback model instead of failing.
+  Restart ShortsRadar afterwards, then paste an API key from [platform.claude.com](https://platform.claude.com/settings/keys) into **Settings**. Default model: **Claude Opus 5** at *medium* effort (both adjustable in Settings). Requests use Anthropic's server-side refusal fallback (`fallbacks: "default"`) so a request that trips a safety classifier is retried on the recommended fallback model instead of failing.
 - **Free templates** — proven title/hook/script formats filled with your topic, scored and ranked.
 - **Copy prompt** — a ready-made prompt you paste into the free [Claude.ai](https://claude.ai) chat.
 
@@ -174,7 +175,10 @@ All scores are **estimates built from public data** — the same kind of signals
 | "quota is used up" | Wait for the reset (midnight Pacific) — cached results still work. |
 | Port 8765 is busy | `python run.py --port 8800` (and set the same port in the extension popup). |
 | Extension says "ShortsRadar isn't running" | Start the app, then reload the YouTube tab. |
-| Claude errors | Check the key in Settings, `pip install "anthropic>=1.8"`, and Python 3.10+. |
+| Claude errors | Check the key in Settings; if the SDK is missing, Settings shows the install command for your computer. |
+| `'pip' is not recognized` / `pip: command not found` | Run pip through Python instead: copy the command from Settings (or use `py -m pip …` on Windows, `python3 -m pip …` on macOS/Linux). |
+| `No matching distribution found for anthropic>=1.8` | That Python is older than 3.10 (macOS's built-in `python3` is 3.9). Install the latest Python from python.org and start ShortsRadar with it. |
+| `error: externally-managed-environment` | Homebrew and Debian/Ubuntu Pythons block global installs. Settings then shows a command that creates a `.venv` in the project folder; `./start.sh` uses it automatically. On Debian/Ubuntu run `sudo apt install python3-venv` first if that fails. |
 
 ---
 

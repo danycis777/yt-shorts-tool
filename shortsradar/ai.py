@@ -1,7 +1,7 @@
 """AI Studio: titles, descriptions, tags, hooks, Shorts scripts and video ideas.
 
 Three ways to run every task:
-  * "claude"   - calls Claude through the official `anthropic` SDK (optional: pip install anthropic)
+  * "claude"   - calls Claude through the official `anthropic` SDK (optional, needs Python 3.10+)
                  when an Anthropic API key is configured.
   * "template" - an offline, zero-cost generator built on proven YouTube formats.
   * "prompt"   - a ready-to-paste prompt for the free Claude.ai chat.
@@ -13,7 +13,11 @@ import datetime as dt
 import importlib.util
 import json
 import os
-from typing import Any, Dict, List
+import shlex
+import sys
+import sysconfig
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from . import config
 from .seo import score_metadata
@@ -23,6 +27,9 @@ from .titles import generate_titles, score_title
 DEFAULT_MODEL = "claude-opus-5"
 EFFORTS = ("low", "medium", "high", "xhigh", "max")
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
+SDK_REQUIREMENT = "anthropic>=1.8"
+SDK_MIN_PYTHON = (3, 10)
+PROJECT_DIR = Path(__file__).resolve().parent.parent
 
 SYSTEM_PROMPT = """You are a YouTube growth strategist who specialises in YouTube Shorts and short-form retention.
 You write packaging (titles, hooks, descriptions, tags) and scripts that earn clicks honestly: every
@@ -47,18 +54,67 @@ def api_key(app) -> str:
     return app.settings.get("anthropic_api_key") or os.environ.get("ANTHROPIC_AUTH_TOKEN", "")
 
 
+def _shell_quote(text: str) -> str:
+    if os.name == "nt":
+        return f'"{text}"' if " " in text else text
+    return shlex.quote(text)
+
+
+def _externally_managed() -> bool:
+    """True when this Python refuses pip installs outside a virtual environment (PEP 668)."""
+    if sys.prefix != sys.base_prefix:
+        return False
+    stdlib = sysconfig.get_path("stdlib")
+    return bool(stdlib) and os.path.isfile(os.path.join(stdlib, "EXTERNALLY-MANAGED"))
+
+
+def install_info() -> Dict[str, Any]:
+    """The exact command that installs the Claude SDK for the Python running ShortsRadar.
+
+    A bare `pip install` often targets a different Python than the one running the app."""
+    python = sys.executable or ""
+    exe = _shell_quote(python) if python else ("py -3" if os.name == "nt" else "python3")
+    command = f'{exe} -m pip install "{SDK_REQUIREMENT}"'
+    after = "Then restart ShortsRadar."
+    venv = _externally_managed() and (PROJECT_DIR / "run.py").is_file()
+    if venv:  # e.g. Homebrew or Debian/Ubuntu Python: install into the project's .venv instead
+        command = (f"cd {_shell_quote(str(PROJECT_DIR))} && {exe} -m venv .venv && "
+                   f'.venv/bin/python -m pip install "{SDK_REQUIREMENT}"')
+        after = "Then restart ShortsRadar with ./start.sh (it uses .venv automatically) or .venv/bin/python run.py."
+    return {
+        "python_version": ".".join(str(n) for n in sys.version_info[:3]),
+        "python_path": python,
+        "python_ok": sys.version_info >= SDK_MIN_PYTHON,
+        "shell": "Command Prompt" if os.name == "nt" else "Terminal",
+        "command": command,
+        "venv": venv,
+        "after": after,
+    }
+
+
+def _hint(key: bool, install: Optional[Dict[str, Any]]) -> Optional[str]:
+    if not key:
+        return "Add an Anthropic API key in Settings to generate with Claude — or use the free Template/Prompt modes."
+    if install is None:
+        return None
+    if not install["python_ok"]:
+        return (f"Claude needs Python 3.10 or newer, but ShortsRadar is running on Python {install['python_version']}. "
+                "Install the latest Python from python.org, then start ShortsRadar again.")
+    return f"Install the Claude SDK by running this in {install['shell']}:\n  {install['command']}\n{install['after']}"
+
+
 def status(app) -> Dict[str, Any]:
     key = bool(api_key(app))
     sdk = sdk_available()
+    install = None if sdk else install_info()
     return {
         "sdk_installed": sdk,
         "key_configured": key,
         "ready": key and sdk,
         "model": app.settings.get("ai_model") or DEFAULT_MODEL,
         "effort": app.settings.get("ai_effort") or "medium",
-        "hint": None if (key and sdk) else (
-            "Install the Claude SDK: pip install \"anthropic>=1.8\"" if key else
-            "Add an Anthropic API key in Settings to generate with Claude — or use the free Template/Prompt modes."),
+        "install": install,
+        "hint": _hint(key, install),
     }
 
 
