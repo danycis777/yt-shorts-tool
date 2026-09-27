@@ -36,11 +36,15 @@ class SettingsTests(unittest.TestCase):
     def test_env_override(self):
         s = Settings(self.path)
         os.environ["YOUTUBE_API_KEY"] = "from-env-key"
+        os.environ["SHORTSRADAR_ANTHROPIC_API_KEY"] = "sr-specific"
+        os.environ["ANTHROPIC_API_KEY"] = "generic"
         try:
             self.assertEqual(s.get("youtube_api_key"), "from-env-key")
             self.assertTrue(s.public()["youtube_api_key_from_env"])
+            self.assertEqual(s.get("anthropic_api_key"), "sr-specific")  # tool-specific name wins
         finally:
-            del os.environ["YOUTUBE_API_KEY"]
+            for name in ("YOUTUBE_API_KEY", "SHORTSRADAR_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY"):
+                del os.environ[name]
 
     def test_corrupt_file_falls_back_to_defaults(self):
         self.path.write_text("{not json")

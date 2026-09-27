@@ -17,8 +17,9 @@ CHANNEL_PARTS = ("snippet", "statistics", "contentDetails", "brandingSettings", 
 PLAYER_MAX_WIDTH = 480  # asks the API for embed dimensions, which reveal vertical (Shorts) videos
 
 FRIENDLY_ERRORS = {
-    "quotaExceeded": "Your YouTube API daily quota is used up. It resets at midnight Pacific Time "
-                     "(or add a second API key/project in Settings).",
+    "quotaExceeded": "Your YouTube API daily quota is used up. It resets at midnight Pacific Time; cached "
+                     "results keep working until then. For a permanently higher limit, request a quota "
+                     "extension from Google (YouTube API Services audit form).",
     "dailyLimitExceeded": "Your YouTube API daily quota is used up. It resets at midnight Pacific Time.",
     "rateLimitExceeded": "YouTube is rate-limiting requests. Wait a minute and try again.",
     "keyInvalid": "Your YouTube API key is not valid. Check it in Settings.",

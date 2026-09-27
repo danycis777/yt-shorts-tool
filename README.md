@@ -151,7 +151,7 @@ All scores are **estimates built from public data** — the same kind of signals
 ## Privacy & data
 
 - Everything runs locally; the dashboard only listens on `127.0.0.1` and rejects requests from other websites.
-- Settings (including API keys) are stored in `~/.shortsradar/config.json` (owner-only permissions); cached data and history in `~/.shortsradar/shortsradar.db`. Set `SHORTSRADAR_HOME` to use another folder. You can also provide keys via the `YOUTUBE_API_KEY` / `ANTHROPIC_API_KEY` environment variables.
+- Settings (including API keys) are stored in `~/.shortsradar/config.json` (owner-only permissions); cached data and history in `~/.shortsradar/shortsradar.db`. Set `SHORTSRADAR_HOME` to use another folder. You can also provide keys via environment variables: `YOUTUBE_API_KEY` (or `SHORTSRADAR_YOUTUBE_API_KEY`) and `SHORTSRADAR_ANTHROPIC_API_KEY` (or `ANTHROPIC_API_KEY`).
 - Stored YouTube statistics older than 30 days are deleted automatically, in line with YouTube API data policies.
 
 ---

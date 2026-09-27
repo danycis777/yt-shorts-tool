@@ -24,10 +24,19 @@ DEFAULTS: Dict[str, Any] = {
 }
 
 SECRET_KEYS = ("youtube_api_key", "anthropic_api_key")
+# Environment variables that override stored secrets (first one set wins). The SHORTSRADAR_* names
+# avoid clashing with other tools that read ANTHROPIC_API_KEY (e.g. when running inside Claude Code).
 ENV_OVERRIDES = {
-    "youtube_api_key": "YOUTUBE_API_KEY",
-    "anthropic_api_key": "ANTHROPIC_API_KEY",
+    "youtube_api_key": ("SHORTSRADAR_YOUTUBE_API_KEY", "YOUTUBE_API_KEY"),
+    "anthropic_api_key": ("SHORTSRADAR_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY"),
 }
+
+
+def env_secret(key: str) -> str:
+    for name in ENV_OVERRIDES.get(key, ()):
+        if os.environ.get(name):
+            return os.environ[name]
+    return ""
 
 # Base URLs can be overridden (used by the test-suite's fake servers).
 YOUTUBE_API_BASE = os.environ.get("SHORTSRADAR_YT_BASE", "https://www.googleapis.com/youtube/v3")
@@ -64,9 +73,9 @@ class Settings:
                 pass  # a corrupt config falls back to defaults
 
     def get(self, key: str) -> Any:
-        env_name = ENV_OVERRIDES.get(key)
-        if env_name and os.environ.get(env_name):
-            return os.environ[env_name]
+        from_env = env_secret(key)
+        if from_env:
+            return from_env
         with self._lock:
             return self._values.get(key, DEFAULTS.get(key))
 
@@ -92,7 +101,7 @@ class Settings:
             if key in SECRET_KEYS:
                 out[key] = mask(value)
                 out[key + "_set"] = bool(value)
-                out[key + "_from_env"] = bool(os.environ.get(ENV_OVERRIDES[key], ""))
+                out[key + "_from_env"] = bool(env_secret(key))
             else:
                 out[key] = value
         out["data_dir"] = str(self.path.parent)

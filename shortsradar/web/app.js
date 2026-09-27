@@ -1006,7 +1006,7 @@ PAGES.settings = async (params, main, alive) => {
     h("div", { class: "stack" },
       card("YouTube Data API key", `Free · used today: ${state.status.quota.used.toLocaleString()} of ${state.status.quota.limit.toLocaleString()} units (resets midnight Pacific)`,
         h("div", { class: "stack-sm" }, h("div", { class: "row" }, h("div", { class: "grow" }, ytKey), reveal(ytKey)),
-          st.youtube_api_key_from_env ? h("div", { class: "small muted" }, "Set by the YOUTUBE_API_KEY environment variable.") : null,
+          st.youtube_api_key_from_env ? h("div", { class: "small muted" }, "Set by an environment variable (YOUTUBE_API_KEY or SHORTSRADAR_YOUTUBE_API_KEY).") : null,
           h("div", { class: "row", style: { alignItems: "center" } }, h("button", { class: "btn sm", type: "button", onClick: test }, "Save & test key"), testOut))),
       card("Claude (optional)", "For AI titles, hooks, scripts and descriptions",
         h("div", { class: "stack-sm" }, h("div", { class: "row" }, h("div", { class: "grow" }, aiKey), reveal(aiKey)),
