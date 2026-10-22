@@ -1,0 +1,693 @@
+/* =============================================
+   FRESHMAN FRIGHT FEST - style.css
+   Only HTML + CSS, no JavaScript!
+   ============================================= */
+
+
+/* ---------- THE PAGE ---------- */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(#07020d, #1c0a2b 45%, #2d0b1e);
+  color: white;
+  font-family: 'Gochi Hand', cursive;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+
+/* ---------- LIGHTNING FLASH ---------- */
+
+.lightning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+  animation: lightning 9s infinite;
+}
+
+@keyframes lightning {
+  0%, 88%, 100% { opacity: 0; }
+  89% { opacity: 0.35; }
+  90% { opacity: 0; }
+  91% { opacity: 0.2; }
+  92% { opacity: 0; }
+}
+
+
+/* ---------- THE MOON ---------- */
+
+.moon {
+  position: fixed;
+  top: 40px;
+  left: 6%;
+  width: 120px;
+  height: 120px;
+  background: #fff4c9;
+  border-radius: 50%;
+  box-shadow: 0 0 60px 15px rgba(255, 244, 201, 0.45);
+}
+
+.crater {
+  position: absolute;
+  background: #e8dca8;
+  border-radius: 50%;
+}
+
+.c1 { width: 26px; height: 26px; top: 30px; left: 25px; }
+.c2 { width: 16px; height: 16px; top: 72px; left: 60px; }
+.c3 { width: 12px; height: 12px; top: 38px; left: 80px; }
+
+
+/* ---------- STARS ---------- */
+
+.star {
+  position: fixed;
+  color: #fffbe0;
+  font-size: 14px;
+  animation: twinkle 2s infinite;
+}
+
+.s1 { top: 8%;  left: 30%; }
+.s2 { top: 15%; left: 72%; animation-delay: 0.5s; }
+.s3 { top: 35%; left: 3%;  animation-delay: 1s; }
+.s4 { top: 55%; left: 92%; animation-delay: 1.5s; }
+.s5 { top: 5%;  left: 55%; animation-delay: 0.8s; }
+.s6 { top: 80%; left: 8%;  animation-delay: 1.2s; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+
+/* ---------- FLYING BATS ---------- */
+
+.bat {
+  position: fixed;
+  left: -10%;
+  font-size: 40px;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px #b388ff);
+  animation: fly 12s linear infinite;
+}
+
+.bat1 { top: 12%; }
+.bat2 { top: 30%; font-size: 28px; animation-duration: 16s; animation-delay: 4s; }
+.bat3 { top: 5%;  font-size: 34px; animation-duration: 10s; animation-delay: 7s; }
+
+@keyframes fly {
+  0%   { left: -10%; transform: translateY(0); }
+  25%  { transform: translateY(-40px); }
+  50%  { transform: translateY(25px); }
+  75%  { transform: translateY(-30px); }
+  100% { left: 110%; transform: translateY(0); }
+}
+
+
+/* ---------- FLOATING GHOSTS ---------- */
+
+.ghost {
+  position: fixed;
+  font-size: 60px;
+  opacity: 0.75;
+  animation: haunt 6s ease-in-out infinite;
+}
+
+.ghost1 { top: 40%; left: 5%; }
+.ghost2 { top: 68%; right: 6%; font-size: 45px; animation-delay: 2s; }
+
+@keyframes haunt {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(15px, -30px); }
+  50% { transform: translate(-10px, -55px); opacity: 0.3; }
+  75% { transform: translate(-20px, -20px); }
+}
+
+
+/* ---------- GLOWING EYES IN THE DARK ---------- */
+
+.eyes {
+  position: fixed;
+  display: flex;
+  gap: 12px;
+}
+
+.eyes span {
+  display: block;
+  width: 16px;
+  height: 9px;
+  background: #ffea00;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #ffea00;
+  animation: blink 5s infinite;
+}
+
+.eyes1 { bottom: 20%; left: 4%; }
+.eyes2 { top: 45%; right: 4%; }
+.eyes3 { bottom: 8%; right: 15%; }
+
+/* the middle pair has evil red eyes */
+.eyes2 span {
+  background: #ff1f1f;
+  box-shadow: 0 0 12px #ff1f1f;
+  animation-delay: 2s;
+}
+
+.eyes3 span { animation-delay: 3.5s; }
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+
+/* ---------- HANGING SPIDER ---------- */
+
+.spider {
+  position: fixed;
+  top: 0;
+  right: 12%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.thread {
+  width: 2px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: dangle 4s ease-in-out infinite;
+}
+
+.spider-body {
+  font-size: 40px;
+  margin-top: -8px;
+  filter: drop-shadow(0 0 8px #b388ff);
+}
+
+@keyframes dangle {
+  0%, 100% { height: 60px; }
+  50% { height: 200px; }
+}
+
+
+/* ---------- THE POSTER BOX ---------- */
+/* the mint green frame from the real poster, but GLOWING */
+
+.poster {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 85%;
+  max-width: 760px;
+  margin: 100px auto 60px;
+  padding: 50px 30px 80px;
+  background: rgba(25, 8, 35, 0.9);
+  border: 6px solid #9dffc4;
+  border-radius: 20px;
+  animation: rise 1.5s ease-out, glow 3s ease-in-out infinite;
+}
+
+/* the poster rises up like it's coming out of a grave */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(150px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px #9dffc4; }
+  50% { box-shadow: 0 0 55px #9dffc4, 0 0 90px #3dff8b; }
+}
+
+.web {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  font-size: 80px;
+  opacity: 0.45;
+}
+
+
+/* ---------- CSS JACK-O'-LANTERNS ---------- */
+
+.pumpkin {
+  position: absolute;
+  z-index: 2;
+  width: 130px;
+  height: 105px;
+  background: #ff8c1a;
+  border-radius: 50%;
+  box-shadow: inset -12px -10px 0 rgba(0, 0, 0, 0.15), 0 0 35px rgba(255, 140, 26, 0.7);
+  animation: wobble 3s ease-in-out infinite;
+}
+
+.pumpkin-top    { top: -60px; right: -50px; }
+.pumpkin-bottom { bottom: -55px; left: -50px; animation-delay: 1.5s; }
+
+.stem {
+  position: absolute;
+  top: -16px;
+  left: 58px;
+  width: 14px;
+  height: 24px;
+  background: #3e7d2a;
+  border-radius: 4px;
+}
+
+/* the lines on the pumpkin */
+.rib {
+  position: absolute;
+  top: 0;
+  left: 35px;
+  width: 54px;
+  height: 101px;
+  border-left: 3px solid #e06b00;
+  border-right: 3px solid #e06b00;
+  border-radius: 50%;
+}
+
+/* triangle eyes (made with borders!) */
+.eye {
+  position: absolute;
+  top: 28px;
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 22px solid #ffe066;
+  animation: candle 1.5s infinite;
+}
+
+.left-eye  { left: 28px; }
+.right-eye { right: 28px; }
+
+.mouth {
+  position: absolute;
+  top: 60px;
+  left: 30px;
+  width: 70px;
+  height: 24px;
+  background: #ffe066;
+  border-radius: 0 0 40px 40px;
+  animation: candle 1.5s infinite;
+}
+
+.tooth {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 8px;
+  background: #ff8c1a;
+}
+
+.tooth-left  { left: 18px; }
+.tooth-right { right: 18px; }
+
+/* the candle inside flickers */
+@keyframes candle {
+  0%, 100% { opacity: 1; }
+  20% { opacity: 0.7; }
+  40% { opacity: 1; }
+  60% { opacity: 0.5; }
+  80% { opacity: 0.9; }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+}
+
+/* hover over a pumpkin = EVIL MODE */
+.pumpkin:hover {
+  cursor: pointer;
+  animation: shake 0.3s infinite;
+}
+
+.pumpkin:hover .eye {
+  border-bottom-color: #ff1a1a;
+}
+
+.pumpkin:hover .mouth {
+  background: #ff1a1a;
+}
+
+
+/* ---------- THE TITLE ---------- */
+
+.freshman {
+  margin: 0;
+  font-family: 'Creepster', cursive;
+  font-size: 42px;
+  color: #ffb3c7;
+  letter-spacing: 10px;
+  text-shadow: 0 0 12px #ff5c8a;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { letter-spacing: 10px; }
+  50% { letter-spacing: 18px; }
+}
+
+.title {
+  margin: 10px 0 40px;
+  font-family: 'Creepster', cursive;
+  font-weight: normal;
+  line-height: 0.95;
+}
+
+/* FRIGHT flickers like a broken neon sign */
+.fright {
+  display: block;
+  font-size: 130px;
+  color: #8cff3a;
+  text-shadow: 0 0 10px #8cff3a, 0 0 30px #39ff14, 5px 5px 0 #1a3d00;
+  animation: flicker 5s infinite;
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 54%, 56%, 100% { opacity: 1; }
+  20%, 22%, 55% { opacity: 0.2; }
+}
+
+.fest {
+  display: inline-block;
+  position: relative;
+  font-size: 130px;
+  color: #ff7a00;
+  text-shadow: 0 0 10px #ff7a00, 0 0 35px #ff3c00, 5px 5px 0 #4a1a00;
+}
+
+/* slime dripping off FEST */
+.drip {
+  position: absolute;
+  top: 78%;
+  width: 10px;
+  height: 0;
+  background: #ff7a00;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 0 8px #ff7a00;
+  animation: drip 4s ease-in infinite;
+}
+
+.d1 { left: 8%; }
+.d2 { left: 30%; animation-delay: 1.2s; }
+.d3 { left: 52%; animation-delay: 2.5s; }
+.d4 { left: 74%; animation-delay: 0.6s; }
+.d5 { left: 88%; animation-delay: 3s; }
+
+@keyframes drip {
+  0%   { height: 0; opacity: 1; }
+  60%  { height: 70px; opacity: 1; }
+  100% { height: 90px; opacity: 0; }
+}
+
+/* the red squiggles from the real poster */
+.squiggle {
+  text-decoration: underline wavy #ff2d55;
+  text-decoration-thickness: 3px;
+}
+
+
+/* ---------- CAUTION TAPE ---------- */
+
+.tape {
+  width: 120%;
+  margin: 40px 0 60px -10%;
+  background: #ffd60a;
+  color: #111;
+  border-top: 5px dashed #111;
+  border-bottom: 5px dashed #111;
+  transform: rotate(-4deg);
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.tape p {
+  display: inline-block;
+  margin: 10px 0;
+  font-family: 'Creepster', cursive;
+  font-size: 30px;
+  letter-spacing: 2px;
+  animation: slide 14s linear infinite;
+}
+
+@keyframes slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+
+/* ---------- TOMBSTONES ---------- */
+
+.graveyard {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-bottom: 60px;
+}
+
+.tombstone {
+  width: 190px;
+  padding: 35px 10px 25px;
+  background: linear-gradient(#c3c7ce, #80858e);
+  border-radius: 95px 95px 12px 12px;
+  border-bottom: 16px solid #2f6b1f;
+  color: #1c1d20;
+  box-shadow: inset -8px -8px 0 rgba(0, 0, 0, 0.2), 0 10px 25px rgba(0, 0, 0, 0.7);
+}
+
+.t1 { transform: rotate(-4deg); }
+.t2 { transform: rotate(2deg); }
+.t3 { transform: rotate(-1deg); }
+
+/* hover over a tombstone and it shakes like something is coming out */
+.tombstone:hover {
+  cursor: pointer;
+  animation: shake 0.4s infinite;
+}
+
+.rip {
+  margin: 0;
+  font-family: 'Creepster', cursive;
+  font-size: 26px;
+  letter-spacing: 4px;
+  color: #4a4d54;
+}
+
+.label {
+  margin: 8px 0 0;
+  font-size: 22px;
+}
+
+.big {
+  margin: 6px 0 0;
+  font-family: 'Creepster', cursive;
+  font-size: 36px;
+  line-height: 1.05;
+}
+
+@keyframes shake {
+  0%   { transform: rotate(0) translateY(0); }
+  25%  { transform: rotate(5deg) translateY(-6px); }
+  50%  { transform: rotate(0) translateY(0); }
+  75%  { transform: rotate(-5deg) translateY(-6px); }
+  100% { transform: rotate(0) translateY(0); }
+}
+
+
+/* ---------- TREATS ---------- */
+
+.treats-title {
+  margin: 0 0 30px;
+  font-family: 'Creepster', cursive;
+  font-weight: normal;
+  font-size: 50px;
+  color: #c9a7ff;
+  text-shadow: 0 0 15px #7c4dff;
+}
+
+.treats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.treat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  font-size: 44px;
+  background: #2a1238;
+  border: 3px solid #ff7a00;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.5);
+  animation: float 3s ease-in-out infinite;
+}
+
+.treat p {
+  margin: 0;
+  font-size: 22px;
+  color: #ffd8a8;
+}
+
+.treat2 { animation-delay: 0.4s; }
+.treat3 { animation-delay: 0.8s; }
+.treat4 { animation-delay: 1.2s; }
+
+/* hover over a treat and it spins */
+.treat:hover {
+  cursor: pointer;
+  background: #ff7a00;
+  animation: spin 0.8s linear infinite;
+}
+
+.treat:hover p {
+  color: #2a1238;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+
+/* ---------- "CLICK IF YOU DARE" SURPRISE ---------- */
+
+.dare {
+  margin-top: 60px;
+}
+
+.dare summary {
+  display: inline-block;
+  padding: 14px 30px;
+  font-family: 'Creepster', cursive;
+  font-size: 30px;
+  color: #ff2d55;
+  border: 3px dashed #ff2d55;
+  border-radius: 12px;
+  cursor: pointer;
+  animation: heartbeat 1.5s infinite;
+}
+
+.dare summary:hover {
+  background: #ff2d55;
+  color: black;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.1); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.08); }
+}
+
+.boo {
+  margin: 25px 0 0;
+  font-family: 'Creepster', cursive;
+  font-size: 110px;
+  color: white;
+  text-shadow: 0 0 25px white, 0 0 50px #ff2d55;
+  animation: jumpscare 0.5s ease-out;
+}
+
+@keyframes jumpscare {
+  from { transform: scale(0.1) rotate(-20deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.dare-text {
+  font-size: 26px;
+  color: #ffb3c7;
+}
+
+
+/* ---------- FOOTER + FOG ---------- */
+
+footer {
+  position: relative;
+  z-index: 1;
+  padding: 10px 20px 60px;
+  font-size: 20px;
+  color: #c9b8e8;
+}
+
+footer p {
+  margin: 5px 0;
+}
+
+.fog {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(to top, rgba(190, 170, 230, 0.35), transparent);
+  z-index: 2;
+  pointer-events: none;
+  animation: fog 6s ease-in-out infinite;
+}
+
+@keyframes fog {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+
+/* ---------- PHONE SCREENS ---------- */
+
+@media (max-width: 600px) {
+  .poster {
+    width: 92%;
+    margin-bottom: 100px;
+    padding: 50px 15px 80px;
+  }
+
+  .freshman {
+    font-size: 28px;
+  }
+
+  .fright,
+  .fest {
+    font-size: 72px;
+  }
+
+  .tape p {
+    font-size: 22px;
+  }
+
+  .pumpkin-top    { top: -75px; right: -10px; }
+  .pumpkin-bottom { bottom: -70px; left: -10px; }
+
+  .treat {
+    width: 100px;
+    height: 100px;
+    font-size: 36px;
+  }
+
+  .boo {
+    font-size: 72px;
+  }
+}
